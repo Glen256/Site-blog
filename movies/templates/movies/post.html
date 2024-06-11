@@ -1,0 +1,28 @@
+{% extends 'movies/base.html' %}
+
+{% block content %}
+<h1>{{post.title}}</h1>
+
+{% if post.photo %}
+<p><img class="img-article-left" src="{{post.photo.url}}"></p>
+{% endif %}
+
+{{post.content|linebreaks}}
+
+<!-- Вывод комментариев -->
+{% for comment in comments %}
+    <div class="comment">
+        <p>{{ comment.text }}</p>
+        <p>Автор: {{ comment.user }}</p>
+        <p>Дата: {{ comment.created }}</p>
+    </div>
+{% endfor %}
+
+<!-- Форма для добавления комментариев -->
+<form method="post" action="{% url 'add_comment' post.slug %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Добавить комментарий</button>
+</form>
+
+{% endblock %}
